@@ -1,0 +1,74 @@
+@font-face {
+  font-family: "Inconsolota";
+  src: local("inconsolota"),
+    url("./fonts/inconsolata/Inconsolata.ttf") format("truetype");
+}
+
+.rta-annotator-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.rta-legend-container {
+  display: flex;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.rta-legend-option-container {
+  display: flex;
+  align-items: center;
+  margin-right: 5px;
+}
+
+.rta-legend-option-input {
+  margin: 0px;
+}
+
+.rta-legend-option-color-line {
+  height: 5px;
+  width: 20px;
+  margin: 5px;
+}
+
+.rta-legend-option-visibility-button {
+  background-color: transparent;
+  border: none;
+}
+
+.rta-default-contextual-menu-container {
+  max-width: 200px;
+  padding: 10px;
+  display: flex;
+}
+
+.rta-default-contextual-menu-icon-container {
+  margin-left: 5px;
+}
+
+.rta-text-container {
+  position: relative;
+  top: 0px;
+  left: 0px;
+  font-family: Inconsolota;
+  z-index: 10;
+  white-space: pre-wrap;
+}
+
+.rta-svg {
+  position: absolute;
+  z-index: 1;
+}
+
+.rta-contextual-menu {
+  font-size: 14px;
+  background-color: #fff;
+  border-radius: 2px;
+  padding: 5px 0 5px 0;
+  margin: 0;
+  position: absolute;
+  list-style: none;
+  box-shadow: 0 0 20px 0 #ccc;
+  z-index: 30;
+}
