@@ -6,6 +6,7 @@ export type AnnotationValue = {
 export type AnnotationsByKey = {
   key: string;
   values: AnnotationValue[];
+  name?: string;
   color?: string;
 };
 
@@ -36,6 +37,7 @@ export type RelationValue = {
 export type RelationsByKey = {
   key: string;
   values: RelationValue[];
+  name?: string;
   color?: string;
   directional?: boolean;
 };

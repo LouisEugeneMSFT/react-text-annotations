@@ -6,7 +6,8 @@ const sampleText = `Woman in NAD with h/o CAD, MD2, asthma and HTN on rampil for
 
 const sampleAnnotations: Annotations = [
   {
-    key: "Diagnosis",
+    key: "diagnosis",
+    name: "Diagnosis",
     values: [
       { start: 9, end: 12 },
       { start: 22, end: 25 },
@@ -16,18 +17,21 @@ const sampleAnnotations: Annotations = [
     ],
   },
   {
-    key: "Time",
+    key: "time",
+    name: "Time",
     values: [
       { start: 61, end: 68 },
       { start: 93, end: 112 },
     ],
   },
   {
-    key: "Medication name",
+    key: "medication_name",
+    name: "Medication name",
     values: [{ start: 50, end: 56 }],
   },
   {
-    key: "Symptom or sign",
+    key: "symptom_or_sign",
+    name: "Symptom or sign",
     values: [
       { start: 118, end: 129 },
       { start: 134, end: 152 },
@@ -37,7 +41,8 @@ const sampleAnnotations: Annotations = [
 
 const sampleRelations: Relations = [
   {
-    key: "Time of",
+    key: "time_of",
+    name: "Time of",
     values: [
       { fromStart: 50, fromEnd: 56, toStart: 61, toEnd: 68 },
       { fromStart: 93, fromEnd: 112, toStart: 118, toEnd: 129 },
@@ -51,7 +56,7 @@ function App() {
   const [relations, setRelations] = useState(sampleRelations);
 
   return (
-    <div style={{ padding: 40 }}>
+    <div style={{ padding: 40, fontSize: 20 }}>
       <Annotator
         text={sampleText}
         annotations={annotations}

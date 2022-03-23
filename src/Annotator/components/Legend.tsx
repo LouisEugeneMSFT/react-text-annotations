@@ -43,7 +43,7 @@ export const Legend = (props: LegendProps) => {
             className="rta-legend-option-color-line"
             style={{ backgroundColor: a.color }}
           />
-          {a.key}
+          {a.name || a.key}
           <button
             className="rta-legend-option-visibility-button "
             onClick={() => {
@@ -75,7 +75,7 @@ export const Legend = (props: LegendProps) => {
             className="rta-legend-option-color-line"
             style={{ backgroundColor: r.color }}
           />
-          {r.key}
+          {r.name || r.key}
           <button
             className="rta-legend-option-visibility-button "
             onClick={() => {

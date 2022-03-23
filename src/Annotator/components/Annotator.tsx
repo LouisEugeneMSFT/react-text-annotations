@@ -17,8 +17,30 @@ type AnnotatorProps = {
   text: string;
   annotations: Annotations;
   relations: Relations;
-  onChangeAnnotations: (newAnnotations: Annotations) => void;
-  onChangeRelations: (newRelations: Relations) => void;
+  onChangeAnnotations: (
+    newAnnotations: Annotations,
+    operation: {
+      type: "add" | "delete";
+      labelKey: string;
+      range: {
+        start: number;
+        end: number;
+      };
+    }
+  ) => void;
+  onChangeRelations: (
+    newRelations: Relations,
+    operation: {
+      type: "add" | "delete";
+      labelKey: string;
+      range: {
+        fromStart: number;
+        fromEnd: number;
+        toStart: number;
+        toEnd: number;
+      };
+    }
+  ) => void;
   renderContextualMenu?: (token: Token) => () => JSX.Element;
   uiOptions?: Partial<UIOptions>;
 };
@@ -72,7 +94,11 @@ export const Annotator = (props: AnnotatorProps) => {
       annotationsForLabel?.values.push({ start, end });
 
       newAnnotations[annotationsForLabelIndex] = annotationsForLabel;
-      onChangeAnnotations(newAnnotations);
+      onChangeAnnotations(newAnnotations, {
+        type: "add",
+        labelKey: selectedLabel.key,
+        range: { start, end },
+      });
     } else if (selectedLabel.type === "relation") {
       const firstToken = newRelationFirstTokenRef.current;
 
@@ -87,16 +113,22 @@ export const Annotator = (props: AnnotatorProps) => {
 
         const relationsForLabel = { ...relations[relationsForLabelIndex] };
 
-        relationsForLabel?.values.push({
+        const value = {
           fromStart: firstToken[0],
           fromEnd: firstToken[1],
           toStart: start,
           toEnd: end,
-        });
+        };
+
+        relationsForLabel?.values.push(value);
 
         newRelations[relationsForLabelIndex] = relationsForLabel;
         newRelationFirstTokenRef.current = null;
-        onChangeRelations(newRelations);
+        onChangeRelations(newRelations, {
+          type: "add",
+          labelKey: selectedLabel.key,
+          range: { ...value },
+        });
       }
     }
   };
@@ -115,7 +147,11 @@ export const Annotator = (props: AnnotatorProps) => {
       );
       newAnnotations[annotationsIndex] = annotationsByKey;
 
-      onChangeAnnotations(newAnnotations);
+      onChangeAnnotations(newAnnotations, {
+        type: "delete",
+        labelKey: selectedLabel.key,
+        range: { start: annotation.start, end: annotation.end },
+      });
     } else if (token.type === "relation") {
       const relation = token as EnrichedRelationValue;
 
@@ -133,7 +169,16 @@ export const Annotator = (props: AnnotatorProps) => {
       );
       newRelations[relationsIndex] = relationsByKey;
 
-      onChangeRelations(newRelations);
+      onChangeRelations(newRelations, {
+        type: "delete",
+        labelKey: selectedLabel.key,
+        range: {
+          fromStart: relation.fromStart,
+          fromEnd: relation.fromEnd,
+          toStart: relation.toStart,
+          toEnd: relation.toEnd,
+        },
+      });
     }
   };
 
