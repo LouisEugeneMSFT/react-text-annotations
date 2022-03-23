@@ -149,7 +149,7 @@ export const Annotator = (props: AnnotatorProps) => {
 
       onChangeAnnotations(newAnnotations, {
         type: "delete",
-        labelKey: selectedLabel.key,
+        labelKey: annotation.key,
         range: { start: annotation.start, end: annotation.end },
       });
     } else if (token.type === "relation") {
@@ -171,7 +171,7 @@ export const Annotator = (props: AnnotatorProps) => {
 
       onChangeRelations(newRelations, {
         type: "delete",
-        labelKey: selectedLabel.key,
+        labelKey: relation.key,
         range: {
           fromStart: relation.fromStart,
           fromEnd: relation.fromEnd,

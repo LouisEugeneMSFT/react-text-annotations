@@ -33,6 +33,7 @@
 }
 
 .rta-legend-option-visibility-button {
+  display: flex;
   background-color: transparent;
   border: none;
 }
