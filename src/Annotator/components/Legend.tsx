@@ -13,6 +13,7 @@ type LegendProps = {
   hiddenRelations: RefObject<Set<string>>;
   updateAnnotationsFiltered: () => void;
   updateRelationsFiltered: () => void;
+  readOnly?: boolean;
 };
 export const Legend = (props: LegendProps) => {
   const {
@@ -24,21 +25,24 @@ export const Legend = (props: LegendProps) => {
     hiddenRelations,
     updateAnnotationsFiltered,
     updateRelationsFiltered,
+    readOnly,
   } = props;
 
   return (
     <div className="rta-legend-container">
       {annotations.map((a) => (
         <div key={a.key} className="rta-legend-option-container">
-          <input
-            type="radio"
-            value="label"
-            className="rta-legend-option-input"
-            checked={selectedLabel?.key === a.key}
-            onChange={() =>
-              setSelectedLabel({ key: a.key, type: "annotation" })
-            }
-          />
+          {readOnly ? null : (
+            <input
+              type="radio"
+              value="label"
+              className="rta-legend-option-input"
+              checked={selectedLabel?.key === a.key}
+              onChange={() =>
+                setSelectedLabel({ key: a.key, type: "annotation" })
+              }
+            />
+          )}
           <div
             className="rta-legend-option-color-line"
             style={{ backgroundColor: a.color }}
@@ -65,12 +69,16 @@ export const Legend = (props: LegendProps) => {
       ))}
       {relations.map((r) => (
         <div key={r.key} className="rta-legend-option-container">
-          <input
-            type="radio"
-            value="label"
-            checked={selectedLabel?.key === r.key}
-            onChange={() => setSelectedLabel({ key: r.key, type: "relation" })}
-          />
+          {readOnly ? null : (
+            <input
+              type="radio"
+              value="label"
+              checked={selectedLabel?.key === r.key}
+              onChange={() =>
+                setSelectedLabel({ key: r.key, type: "relation" })
+              }
+            />
+          )}
           <div
             className="rta-legend-option-color-line"
             style={{ backgroundColor: r.color }}

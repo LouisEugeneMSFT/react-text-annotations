@@ -17,7 +17,7 @@ type AnnotatorProps = {
   text: string;
   annotations: Annotations;
   relations: Relations;
-  onChangeAnnotations: (
+  onChangeAnnotations?: (
     newAnnotations: Annotations,
     operation: {
       type: "add" | "delete";
@@ -28,7 +28,7 @@ type AnnotatorProps = {
       };
     }
   ) => void;
-  onChangeRelations: (
+  onChangeRelations?: (
     newRelations: Relations,
     operation: {
       type: "add" | "delete";
@@ -43,6 +43,7 @@ type AnnotatorProps = {
   ) => void;
   renderContextualMenu?: (token: Token) => () => JSX.Element;
   uiOptions?: Partial<UIOptions>;
+  readOnly?: boolean;
 };
 export const Annotator = (props: AnnotatorProps) => {
   const {
@@ -53,6 +54,7 @@ export const Annotator = (props: AnnotatorProps) => {
     onChangeRelations,
     renderContextualMenu,
     uiOptions,
+    readOnly,
   } = props;
 
   provideMissingColors(annotations, relations);
@@ -84,6 +86,10 @@ export const Annotator = (props: AnnotatorProps) => {
     if (!selectedLabel) {
       return;
     } else if (selectedLabel.type === "annotation") {
+      if (!onChangeAnnotations) {
+        return;
+      }
+
       const newAnnotations = [...annotations];
 
       const annotationsForLabelIndex = annotations.findIndex(
@@ -100,6 +106,10 @@ export const Annotator = (props: AnnotatorProps) => {
         range: { start, end },
       });
     } else if (selectedLabel.type === "relation") {
+      if (!onChangeRelations) {
+        return;
+      }
+
       const firstToken = newRelationFirstTokenRef.current;
 
       if (!firstToken) {
@@ -135,6 +145,9 @@ export const Annotator = (props: AnnotatorProps) => {
 
   const onDelete = (token: Token) => {
     if (token.type === "annotation") {
+      if (!onChangeAnnotations) {
+        return;
+      }
       const annotation = token as EnrichedAnnotationValue;
 
       const newAnnotations = [...annotations];
@@ -153,6 +166,9 @@ export const Annotator = (props: AnnotatorProps) => {
         range: { start: annotation.start, end: annotation.end },
       });
     } else if (token.type === "relation") {
+      if (!onChangeRelations) {
+        return;
+      }
       const relation = token as EnrichedRelationValue;
 
       const newRelations = [...relations];
@@ -193,9 +209,11 @@ export const Annotator = (props: AnnotatorProps) => {
               onClick={() => window.alert(JSON.stringify(token))}
             />
           </span>
-          <span className="rta-default-contextual-menu-icon-container">
-            <TrashIcon size={15} onClick={() => onDelete(token)} />
-          </span>
+          {readOnly ? null : (
+            <span className="rta-default-contextual-menu-icon-container">
+              <TrashIcon size={15} onClick={() => onDelete(token)} />
+            </span>
+          )}
         </div>
       );
     },
@@ -235,6 +253,7 @@ export const Annotator = (props: AnnotatorProps) => {
         hiddenRelations={hiddenRelations}
         updateAnnotationsFiltered={updateAnnotationsFiltered}
         updateRelationsFiltered={updateRelationsFiltered}
+        readOnly={readOnly}
       />
       <TextView
         text={text}
@@ -245,6 +264,7 @@ export const Annotator = (props: AnnotatorProps) => {
           renderContextualMenu || defaultRenderContextualMenu
         }
         uiOptions={uiOptions}
+        readOnly={readOnly}
       />
     </div>
   );

@@ -55,6 +55,7 @@ type TextViewProps = {
   onAnnotate: ([start, end]: number[]) => void;
   renderContextualMenu: (token: Token) => () => JSX.Element;
   uiOptions?: Partial<UIOptions>;
+  readOnly?: boolean;
 };
 
 export const TextView = (props: TextViewProps) => {
@@ -65,6 +66,7 @@ export const TextView = (props: TextViewProps) => {
     onAnnotate,
     renderContextualMenu,
     uiOptions: propsUiOptions,
+    readOnly,
   } = props;
 
   const uiOptions = { ...defaultUiOptions, ...propsUiOptions };
@@ -215,6 +217,9 @@ export const TextView = (props: TextViewProps) => {
   });
 
   useEffect(() => {
+    if (readOnly) {
+      return;
+    }
     const keyUpHandler = (event: KeyboardEvent) => {
       switch (event.key) {
         case "Enter":
@@ -223,7 +228,7 @@ export const TextView = (props: TextViewProps) => {
     };
     document.body.addEventListener("keyup", keyUpHandler);
     return () => document.body.removeEventListener("keyup", keyUpHandler);
-  }, [annotate]);
+  }, [readOnly, annotate]);
 
   const padding =
     uiOptions.defaultSvgPadding +
