@@ -52,7 +52,7 @@ export const TextView = (props: TextViewProps) => {
   useEffect(() => {
     setTextContainerHeight(textContainerRef.current?.offsetHeight || 100);
     setTextContainerWidth(textContainerRef.current?.offsetWidth || 100);
-  }, [text, lineHeight]);
+  }, [text, lineHeight, uiOptions.fontSize]);
 
   useEffect(() => {
     function handleResize() {
@@ -61,6 +61,12 @@ export const TextView = (props: TextViewProps) => {
     }
     window.addEventListener("resize", handleResize);
   }, []);
+
+  // Loading the (monospace) font can take time and delay accurate offsetHeight / offsetWidth
+  document.fonts.ready.then(function () {
+    setTextContainerHeight(textContainerRef.current?.offsetHeight || 100);
+    setTextContainerWidth(textContainerRef.current?.offsetWidth || 100);
+  });
 
   return (
     <div style={{ position: "relative" }}>
