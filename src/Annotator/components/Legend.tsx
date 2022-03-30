@@ -73,6 +73,7 @@ export const Legend = (props: LegendProps) => {
             <input
               type="radio"
               value="label"
+              className="rta-legend-option-input"
               checked={selectedLabel?.key === r.key}
               onChange={() =>
                 setSelectedLabel({ key: r.key, type: "relation" })

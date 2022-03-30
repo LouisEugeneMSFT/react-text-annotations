@@ -220,17 +220,32 @@ export const Annotator = (props: AnnotatorProps) => {
     (token: Token) => () => {
       return (
         <div className="rta-default-contextual-menu-container">
-          {token.key}
-          <span className="rta-default-contextual-menu-icon-container">
-            <InfoIcon
-              size={15}
-              onClick={() => window.alert(JSON.stringify(token))}
-            />
-          </span>
-          {readOnly ? null : (
+          {token.name || token.key}
+          <div className="rta-default-contextual-menu-line">
             <span className="rta-default-contextual-menu-icon-container">
-              <TrashIcon size={15} onClick={() => onDelete(token)} />
+              <InfoIcon
+                size={15}
+                onClick={() => {
+                  console.log(token);
+                  window.alert(JSON.stringify(token));
+                }}
+                color="rgba(0, 120, 212,1)"
+              />
             </span>
+            {"Info"}
+          </div>
+
+          {readOnly ? null : (
+            <div className="rta-default-contextual-menu-line">
+              <span className="rta-default-contextual-menu-icon-container">
+                <TrashIcon
+                  size={15}
+                  onClick={() => onDelete(token)}
+                  color="rgba(234, 47, 71, 1)"
+                />
+              </span>
+              {"Delete"}
+            </div>
           )}
         </div>
       );

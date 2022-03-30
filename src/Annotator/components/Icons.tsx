@@ -1,6 +1,6 @@
 import React from "react";
 
-type IconProps = { size?: number; onClick?: () => void };
+type IconProps = { size?: number; onClick?: () => void; color?: string };
 
 export const VisibleIcon = (props: IconProps) => {
   const { size = 24, onClick } = props;
@@ -26,9 +26,15 @@ export const NotVisibleIcon = (props: IconProps) => {
 };
 
 export const InfoIcon = (props: IconProps) => {
-  const { size = 24, onClick } = props;
+  const { size = 24, onClick, color } = props;
   return (
-    <svg height={size} width={size} viewBox="0 0 330 330" onClick={onClick}>
+    <svg
+      height={size}
+      width={size}
+      viewBox="0 0 330 330"
+      onClick={onClick}
+      fill={color}
+    >
       <path
         d="M165,0.008C74.019,0.008,0,74.024,0,164.999c0,90.977,74.019,164.992,165,164.992s165-74.015,165-164.992
 				C330,74.024,255.981,0.008,165,0.008z M165,299.992c-74.439,0-135-60.557-135-134.992S90.561,30.008,165,30.008
@@ -48,9 +54,16 @@ export const InfoIcon = (props: IconProps) => {
 };
 
 export const TrashIcon = (props: IconProps) => {
-  const { size = 24, onClick } = props;
+  const { size = 24, onClick, color } = props;
+
   return (
-    <svg height={size} width={size} viewBox="0 0 458.5 458.5" onClick={onClick}>
+    <svg
+      height={size}
+      width={size}
+      viewBox="0 0 458.5 458.5"
+      onClick={onClick}
+      fill={color}
+    >
       <path
         d="M382.078,57.069h-89.78C289.128,25.075,262.064,0,229.249,0S169.37,25.075,166.2,57.069H76.421
 				c-26.938,0-48.854,21.916-48.854,48.854c0,26.125,20.613,47.524,46.429,48.793V399.5c0,32.533,26.467,59,59,59h192.508

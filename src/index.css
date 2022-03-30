@@ -42,10 +42,15 @@
   max-width: 200px;
   padding: 10px;
   display: flex;
+  flex-direction: column;
+}
+
+.rta-default-contextual-menu-line {
+  margin-top: 5px;
 }
 
 .rta-default-contextual-menu-icon-container {
-  margin-left: 5px;
+  margin-right: 10px;
 }
 
 .rta-text-container {
@@ -63,7 +68,6 @@
 }
 
 .rta-contextual-menu {
-  font-size: 14px;
   background-color: #fff;
   border-radius: 2px;
   padding: 5px 0 5px 0;

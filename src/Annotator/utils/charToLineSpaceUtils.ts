@@ -93,6 +93,7 @@ export const enrichAnnotations = (
       enrichedAnnotations.push({
         ...annotationValue,
         key: annotationsByKey.key,
+        name: annotationsByKey.name,
         type: "annotation",
         color,
         startLine,
@@ -151,6 +152,7 @@ export const enrichRelations = (
       const enrichedRelation = {
         ...relationValue,
         key: relationByKey.key,
+        name: relationByKey.name,
         type: "relation",
         color,
         directional,

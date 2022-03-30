@@ -23,6 +23,7 @@ type AnnotationLinePlacement = {
 export type EnrichedAnnotationValue = {
   key: string;
   type: string;
+  name?: string;
   color?: string;
 } & AnnotationValue &
   AnnotationLinePlacement;
@@ -59,6 +60,7 @@ type RelationLinePlacement = {
 export type EnrichedRelationValue = {
   key: string;
   type: string;
+  name?: string;
   color?: string;
   directional?: boolean;
 } & RelationValue &
