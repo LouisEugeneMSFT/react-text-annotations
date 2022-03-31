@@ -2,7 +2,7 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
-  mode: "none",
+  mode: "development",
   entry: {
     app: path.join(__dirname, "src", "index.tsx"),
   },
@@ -18,20 +18,12 @@ module.exports = {
         exclude: "/node_modules/",
       },
       {
-        test: /\.(woff(2)?|ttf|eot|svg)(\?v=\d+\.\d+\.\d+)?$/,
-        use: [
-          {
-            loader: "file-loader",
-            options: {
-              name: "[name].[ext]",
-              outputPath: "fonts/",
-            },
-          },
-        ],
-      },
-      {
         test: /\.css$/,
         use: ["style-loader", "css-loader"],
+      },
+      {
+        test: /\.(woff|woff2|eot|ttf|otf)$/i,
+        type: "asset/resource",
       },
     ],
   },
