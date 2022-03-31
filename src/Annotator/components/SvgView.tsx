@@ -184,7 +184,6 @@ export const SvgView = (props: TextViewProps) => {
 
   const annotate = useCallback(() => {
     const [from, to] = getSelectionCharOffsets();
-
     onAnnotate([from, to]);
   }, [onAnnotate]);
 
@@ -226,8 +225,6 @@ export const SvgView = (props: TextViewProps) => {
 
     return lineToY(scrollLine.startLine - 1, 0);
   }, [initialScrollToChar, getTextTokenLinePosition, lineToY]);
-
-  console.log(scrollY);
 
   useEffect(() => {
     setLineHeight(enrichedComputedUiOptions.lineHeight);

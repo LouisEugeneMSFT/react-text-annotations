@@ -11,6 +11,13 @@ export const getTextLineBreaks = (
   for (let i = 0; i < text.length; i++) {
     const char = text[i];
 
+    // If we have multiple spaces at the end of the previous line, skip them
+    const lbLength = lineBreaks.length;
+    if (lbLength > 0 && lineCharIndex == 0 && char == " ") {
+      lineCharIndex = -1;
+      lineBreaks[lbLength - 1] = lineBreaks[lbLength - 1] + 1;
+    }
+
     if (char == " " || char == "\n") {
       lastBreakingChar = lineCharIndex;
     }

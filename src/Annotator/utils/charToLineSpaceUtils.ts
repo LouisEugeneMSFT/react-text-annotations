@@ -26,7 +26,7 @@ export const getTokenLinePosition = (
 
   for (let i = 0; i < lineBreaks.length; i++) {
     startLine = i;
-    if (start < lineBreaks[i]) {
+    if (start <= lineBreaks[i]) {
       if (i > 0) {
         startLineCharOffset = lineBreaks[i - 1] + 1;
       }
@@ -35,7 +35,7 @@ export const getTokenLinePosition = (
   }
   for (let i = 0; i < lineBreaks.length; i++) {
     endLine = i;
-    if (end <= lineBreaks[i]) {
+    if (end <= lineBreaks[i] + 1) {
       if (i > 0) {
         endLineCharOffset = lineBreaks[i - 1] + 1;
       }
