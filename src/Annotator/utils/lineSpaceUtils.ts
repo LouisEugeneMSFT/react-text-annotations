@@ -1,22 +1,38 @@
 import { EnrichedAnnotationValue, EnrichedRelationValue } from "../types";
+import { getRelationArrowFromAndTo } from "./lineToXYSpaceUtils";
 
 export const isAnnotationOverlapping = (
   annotation: EnrichedAnnotationValue,
   position: { line: number; charOffset: number; verticalOffset: number }
 ) => {
   const { line, charOffset, verticalOffset } = position;
-  return (
-    annotation.startLine <= line &&
-    annotation.endLine >= line &&
-    annotation.startCharOffset <= charOffset &&
-    annotation.endCharOffset >= charOffset &&
-    verticalOffset == annotation.verticalOffset
-  );
+
+  if (!(annotation.startLine <= line && annotation.endLine >= line)) {
+    return false;
+  }
+  if (!(verticalOffset == annotation.verticalOffset)) {
+    return false;
+  }
+  if (
+    annotation.startLine === line &&
+    !(annotation.startCharOffset <= charOffset)
+  ) {
+    return false;
+  }
+  if (
+    annotation.endLine === line &&
+    !(annotation.endCharOffset >= charOffset)
+  ) {
+    return false;
+  }
+
+  return true;
 };
 
 export const isRelationOverlapping = (
   relation: EnrichedRelationValue,
-  position: { line: number; charOffset: number; verticalOffset: number }
+  position: { line: number; charOffset: number; verticalOffset: number },
+  lineBreaks: number[]
 ) => {
   const { line, charOffset, verticalOffset } = position;
 
@@ -26,31 +42,28 @@ export const isRelationOverlapping = (
   if (!(relation.toEndLine >= line)) {
     return false;
   }
-
   if (!(verticalOffset === relation.verticalOffset)) {
     return false;
   }
 
-  const sameLine = relation.fromStartLine === relation.toEndLine;
+  const { fromArrowLine, fromArrowChar, toArrowLine, toArrowChar } =
+    getRelationArrowFromAndTo(relation, lineBreaks);
 
-  const startMid =
-    (relation.fromStartCharOffset + relation.fromEndCharOffset) / 2;
-
-  const endMid = (relation.toStartCharOffset + relation.toEndCharOffset) / 2;
+  const sameLine = fromArrowLine === toArrowLine;
 
   if (sameLine) {
-    if (!(startMid <= charOffset && endMid >= charOffset)) {
+    if (!(fromArrowChar <= charOffset && toArrowChar >= charOffset)) {
       return false;
     }
   } else {
     if (line == relation.fromStartLine) {
-      if (!(charOffset <= startMid)) {
+      if (!(charOffset <= fromArrowChar)) {
         return false;
       }
     }
 
     if (line == relation.toEndLine) {
-      if (!(charOffset <= endMid)) {
+      if (!(charOffset <= toArrowChar)) {
         return false;
       }
     }

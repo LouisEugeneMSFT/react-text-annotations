@@ -148,6 +148,7 @@ export const SvgView = (props: TextViewProps) => {
 
       const charOffset = xToCharOffset(x);
       let [line, verticalOffset] = yToLine(y);
+
       result = enrichedAnnotations.find((annotation) =>
         isAnnotationOverlapping(annotation, {
           line,
@@ -159,11 +160,15 @@ export const SvgView = (props: TextViewProps) => {
       if (!result) {
         [line, verticalOffset] = yToLine(y, -1);
         result = enrichedRelations.find((relation) =>
-          isRelationOverlapping(relation, {
-            line,
-            charOffset,
-            verticalOffset,
-          })
+          isRelationOverlapping(
+            relation,
+            {
+              line,
+              charOffset,
+              verticalOffset,
+            },
+            lineBreaks
+          )
         );
       }
 
@@ -175,7 +180,12 @@ export const SvgView = (props: TextViewProps) => {
         setContextualMenuAnchor(null);
       }
     },
-    [setContextualMenuAnchor, setContextualToken, enrichedAnnotations]
+    [
+      setContextualMenuAnchor,
+      setContextualToken,
+      enrichedAnnotations,
+      lineBreaks,
+    ]
   );
 
   const handleClick = useCallback((e) => {
