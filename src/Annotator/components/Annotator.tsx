@@ -226,7 +226,6 @@ export const Annotator = (props: AnnotatorProps) => {
               <InfoIcon
                 size={15}
                 onClick={() => {
-                  console.log(token);
                   window.alert(JSON.stringify(token));
                 }}
                 color="rgba(0, 120, 212,1)"

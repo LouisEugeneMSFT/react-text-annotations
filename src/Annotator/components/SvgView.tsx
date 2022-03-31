@@ -184,7 +184,7 @@ export const SvgView = (props: TextViewProps) => {
 
   const annotate = useCallback(() => {
     const [from, to] = getSelectionCharOffsets();
-    console.log(from, to);
+
     onAnnotate([from, to]);
   }, [onAnnotate]);
 
@@ -227,6 +227,8 @@ export const SvgView = (props: TextViewProps) => {
     return lineToY(scrollLine.startLine - 1, 0);
   }, [initialScrollToChar, getTextTokenLinePosition, lineToY]);
 
+  console.log(scrollY);
+
   useEffect(() => {
     setLineHeight(enrichedComputedUiOptions.lineHeight);
   }, [enrichedComputedUiOptions.lineHeight]);
@@ -243,8 +245,10 @@ export const SvgView = (props: TextViewProps) => {
       {scrollY ? (
         <div
           ref={scrollAnchorRef}
-          style={{ position: "absolute", top: scrollY }}
-        />
+          style={{ position: "absolute", top: scrollY, opacity: 0 }}
+        >
+          __
+        </div>
       ) : null}
       <svg
         className="rta-svg"
