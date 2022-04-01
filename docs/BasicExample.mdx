@@ -1,0 +1,32 @@
+---
+name: Basic example
+route: /basic
+---
+
+# Basic example
+
+Here is a very simple example:
+
+import { Playground, Props } from "docz";
+import { Annotator } from "../src/index.tsx";
+
+<Playground>
+  {() => {
+    const sampleText = "Hello world";
+    const [annotations, setAnnotations] = React.useState([
+      {
+        key: "sample_label",
+        name: "Sample label",
+        values: [{ start: 0, end: 5 }],
+      },
+    ]);
+    return (
+      <Annotator
+        text={sampleText}
+        annotations={annotations}
+        relations={[]}
+        onChangeAnnotations={setAnnotations}
+      />
+    );
+  }}
+</Playground>
