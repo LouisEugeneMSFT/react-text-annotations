@@ -47,7 +47,7 @@ type TextViewProps = {
   initialScrollToChar?: number;
   textContainerWidth: number;
   textContainerHeight: number;
-  setLineHeight: any;
+  setLineHeight: (newLineHeight: number) => void;
 };
 
 export const SvgView = (props: TextViewProps) => {
@@ -265,9 +265,8 @@ export const SvgView = (props: TextViewProps) => {
         }}
         width={textContainerWidth + 2 * padding}
         height={textContainerHeight + 2 * padding}
-        viewBox={`${-padding} ${-padding} ${textContainerWidth + 2 * padding} ${
-          textContainerHeight + 2 * padding
-        }`}
+        viewBox={`${-padding} ${-padding} ${textContainerWidth +
+          2 * padding} ${textContainerHeight + 2 * padding}`}
       >
         {annotationsSvgData.map((data, index) => (
           <line
