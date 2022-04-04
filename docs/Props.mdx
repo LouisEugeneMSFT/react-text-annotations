@@ -1,0 +1,24 @@
+---
+name: Annotator props
+route: /props/annotator
+menu: Props
+---
+
+# Annotator Props
+
+import { Props } from "docz";
+import { Annotator } from "../src/index.tsx";
+import {
+  AnnotationsByKeyDummyComp,
+  AnnotationValueDummyComp,
+} from "./Props.tsx";
+
+<Props of={Annotator} />
+
+AnnotationsByKey:
+
+<Props of={AnnotationsByKeyDummyComp} />
+
+AnnotationValue:
+
+<Props of={AnnotationValueDummyComp} />
