@@ -30,7 +30,7 @@ export const getTextLineBreaks = (
     if (char == "\n") {
       lastBreakingChar = newLine;
       lastBreakingCharIndex = lineCharIndex;
-    } else if (char == " ") {
+    } else if (char == " " || char == "-") {
       lastBreakingChar = space;
       lastBreakingCharIndex = lineCharIndex;
     }
