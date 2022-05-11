@@ -16,23 +16,12 @@ export const getTextLineBreaks = (
   for (let i = 0; i < text.length; i++) {
     const char = text[i];
 
-    // If we have multiple spaces at the end of the previous line and breaking was not caused by new line char, skip them
-    const lbLength = lineBreaks.length;
-    if (
-      lbLength > 0 &&
-      lineCharIndex == 0 &&
-      char == " " &&
-      lastBreakingChar !== newLine
-    ) {
-      lineCharIndex = -1;
-      lineBreaks[lbLength - 1] = lineBreaks[lbLength - 1] + 1;
-    }
-
     const shouldGoToNewLine =
-      char == "\n" || (lineCharIndex + 1) * charWidth > textContainerWidth;
+      char == "\n" ||
+      (char != " " && (lineCharIndex + 1) * charWidth > textContainerWidth);
 
     if (shouldGoToNewLine) {
-      if (char == "\n" || char == " ") {
+      if (char == "\n") {
         lineCharIndex = 0;
         lineBreaks.push(i);
       } else {
