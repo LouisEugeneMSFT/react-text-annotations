@@ -1,5 +1,6 @@
 const newLine = "NEWLINE";
 const space = "SPACE";
+const dash = "DASH";
 
 export const getTextLineBreaks = (
   text: string,
@@ -27,31 +28,34 @@ export const getTextLineBreaks = (
       lineBreaks[lbLength - 1] = lineBreaks[lbLength - 1] + 1;
     }
 
-    if (char == "\n") {
-      lastBreakingChar = newLine;
-      lastBreakingCharIndex = lineCharIndex;
-    } else if (char == " " || char == "-") {
-      lastBreakingChar = space;
-      lastBreakingCharIndex = lineCharIndex;
-    }
+    const shouldGoToNewLine =
+      char == "\n" || (lineCharIndex + 1) * charWidth > textContainerWidth;
 
-    // New line because text says so
-    if (char == "\n") {
-      lineCharIndex = 0;
-      lineBreaks.push(i);
-    }
-    // New line because overflow
-    else if ((lineCharIndex + 1) * charWidth > textContainerWidth) {
-      if (char == " " || char == "\n") {
+    if (shouldGoToNewLine) {
+      if (char == "\n" || char == " ") {
         lineCharIndex = 0;
         lineBreaks.push(i);
       } else {
         lineCharIndex = lineCharIndex - lastBreakingCharIndex;
         lineBreaks.push(i - lineCharIndex);
       }
-    } else {
+    }
+
+    if (char == "\n") {
+      lastBreakingChar = newLine;
+      lastBreakingCharIndex = lineCharIndex;
+    } else if (char == " ") {
+      lastBreakingChar = space;
+      lastBreakingCharIndex = lineCharIndex;
+    } else if (char == "-") {
+      lastBreakingChar = dash;
+      lastBreakingCharIndex = lineCharIndex;
+    }
+
+    if (!shouldGoToNewLine) {
       lineCharIndex += 1;
     }
+
     // End of text
     if (i === text.length - 1 && lineBreaks[lineBreaks.length] !== i) {
       lineBreaks.push(i);
