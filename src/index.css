@@ -60,6 +60,7 @@
   font-family: Inconsolota;
   z-index: 10;
   white-space: pre-wrap;
+  tab-size: 1; /* Because of the monospace font, a tab size different from 1 means we would need to shift all annotation values for display and unshift them when saving. */
 }
 
 .rta-svg {
