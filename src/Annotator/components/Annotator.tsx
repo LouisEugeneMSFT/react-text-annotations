@@ -9,6 +9,7 @@ import {
   UIOptions,
 } from "../types";
 import { provideMissingColors } from "../utils/colorsUtils";
+import { formatText } from "../utils/textUtils";
 import { InfoIcon, TrashIcon } from "./Icons";
 import { Legend } from "./Legend";
 import { TextView } from "./TextView";
@@ -81,8 +82,9 @@ export const Annotator = (props: AnnotatorProps) => {
       type: "relation",
     };
   }
-  const [selectedLabel, setSelectedLabel] =
-    useState<Label>(defaultSelectedLabel);
+  const [selectedLabel, setSelectedLabel] = useState<Label>(
+    defaultSelectedLabel
+  );
 
   const onAnnotate = useCallback(
     ([start, end]: number[]) => {
@@ -288,7 +290,7 @@ export const Annotator = (props: AnnotatorProps) => {
         readOnly={readOnly}
       />
       <TextView
-        text={text}
+        text={formatText(text)}
         annotations={annotationsFiltered}
         relations={relationsFiltered}
         onAnnotate={onAnnotate}

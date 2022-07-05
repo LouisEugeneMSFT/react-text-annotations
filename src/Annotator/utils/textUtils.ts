@@ -2,6 +2,12 @@ const newLine = "NEWLINE";
 const space = "SPACE";
 const dash = "DASH";
 
+export const formatText = (text: string) => {
+  let formattedText = text;
+  formattedText = formattedText.replace("\t", " "); // Make tab line break behaviors similar to space behaviors
+  return formattedText;
+};
+
 export const getTextLineBreaks = (
   text: string,
   textContainerWidth: number,
