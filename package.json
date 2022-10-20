@@ -1,8 +1,9 @@
 {
   "name": "react-text-annotations",
-  "version": "0.1.16",
+  "version": "0.1.20",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
+  "homepage": "https://github.com/LouisEugeneMSFT/react-text-annotations",
   "peerDependencies": {
     "react": "^17.0.0",
     "react-dom": "^17.0.0"

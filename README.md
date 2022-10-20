@@ -15,7 +15,7 @@ yarn add react-text-annotations
 
 ## Example
 
-![alt text](./example/example.png)
+![](https://github.com/LouisEugeneMSFT/react-text-annotations/blob/master/example/example.png?raw=true)
 
 ## Docs and interactive demos
 
