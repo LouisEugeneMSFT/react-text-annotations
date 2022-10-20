@@ -1,4 +1,4 @@
-# react-text-annotate
+# react-text-annotations
 
 [![NPM](https://img.shields.io/npm/v/react-text-annotations)](https://www.npmjs.com/package/react-text-annotations)
 
