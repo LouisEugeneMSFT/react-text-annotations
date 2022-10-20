@@ -19,7 +19,7 @@ yarn add react-text-annotations
 
 ## Docs and interactive demos
 
-Coming soon
+[Here](https://louiseugenemsft.github.io/react-text-annotations/)
 
 ## Sample code
 

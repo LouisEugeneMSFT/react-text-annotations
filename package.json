@@ -13,9 +13,9 @@
     "@types/react-dom": "^17.0.0",
     "copyfiles": "^2.4.1",
     "css-loader": "^6.7.1",
-    "docz": "^2.3.1",
+    "docz": "^2.4.0",
     "fork-ts-checker-webpack-plugin": "^7.2.1",
-    "gh-pages": "^3.2.3",
+    "gh-pages": "^4.0.0",
     "html-webpack-plugin": "^5.5.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.0",
@@ -42,5 +42,6 @@
   },
   "resolutions": {
     "remark-mdx": "1.6.22"
-  }
+  },
+  "dependencies": {}
 }
