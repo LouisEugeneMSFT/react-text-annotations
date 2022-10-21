@@ -10,6 +10,7 @@ import {
   ComputedUIOptions,
   EnrichedAnnotationValue,
   EnrichedRelationValue,
+  Options,
   Relations,
   Token,
   UIOptions,
@@ -42,9 +43,9 @@ type TextViewProps = {
   relations: Relations;
   onAnnotate: ([start, end]: number[]) => void;
   renderContextualMenu: (token: Token) => () => JSX.Element;
+  options?: Options;
   uiOptions?: UIOptions;
   readOnly?: boolean;
-  initialScrollToChar?: number;
   textContainerWidth: number;
   textContainerHeight: number;
   setLineHeight: (newLineHeight: number) => void;
@@ -57,9 +58,9 @@ export const SvgView = (props: TextViewProps) => {
     relations,
     onAnnotate,
     renderContextualMenu,
+    options,
     uiOptions,
     readOnly,
-    initialScrollToChar,
     textContainerWidth,
     textContainerHeight,
     setLineHeight,
@@ -70,7 +71,7 @@ export const SvgView = (props: TextViewProps) => {
   };
 
   const scrollAnchorRef = useRef<HTMLDivElement>(null);
-  const hasScrolledRef = useRef(false);
+  const lastScrolledCharRef = useRef(null);
 
   const [contextualMenuAnchor, setContextualMenuAnchor] = useState<{
     x: number;
@@ -224,38 +225,71 @@ export const SvgView = (props: TextViewProps) => {
     uiOptions.defaultSvgPadding +
     relationsStackHeight * enrichedComputedUiOptions.svgSpace;
 
-  const scrollY = useMemo(() => {
-    if (!initialScrollToChar) {
+  const scrollToChar = options?.scrollToChar;
+  const scrollToFirstAnnotation = options?.scrollToFirstAnnotation;
+
+  const annotationKeysHash = annotations
+    .map((a) => a.key)
+    .sort()
+    .join("-");
+  // When scrollToFirstAnnotation flag is set to true, gets the start of the first annotation across all groups.
+  // annotationKeysHash is used in dependencies instead of just annotations to update only when groups are changed. Otherwise, any new annotation created before others would trigger a scroll.
+  const scrollToAnnotationChar = useMemo(() => {
+    if (!scrollToFirstAnnotation || !annotations.length) {
       return null;
     }
-    const scrollLine = getTextTokenLinePosition(
-      initialScrollToChar,
-      initialScrollToChar
-    );
+    const allValues = annotations.map((a) => a.values).flat();
+    const allStarts = allValues.map((v) => v.start);
+
+    return allStarts.sort()[0];
+  }, [scrollToFirstAnnotation, annotationKeysHash]);
+
+  // scrollToChar has priority
+  const finalScrollTo = scrollToChar || scrollToAnnotationChar;
+
+  const scrollY = useMemo(() => {
+    if (!finalScrollTo) {
+      return null;
+    }
+    const scrollLine = getTextTokenLinePosition(finalScrollTo, finalScrollTo);
 
     return lineToY(scrollLine.startLine - 1, 0);
-  }, [initialScrollToChar, getTextTokenLinePosition, lineToY]);
+  }, [finalScrollTo, getTextTokenLinePosition, lineToY]);
 
   useEffect(() => {
     setLineHeight(enrichedComputedUiOptions.lineHeight);
   }, [enrichedComputedUiOptions.lineHeight]);
 
+  // Reset lastScrolledCharRef when text changes
   useEffect(() => {
-    if (scrollY && scrollAnchorRef.current && !hasScrolledRef.current) {
-      scrollAnchorRef.current?.scrollIntoView({ behavior: "smooth" });
-      hasScrolledRef.current = true;
+    lastScrolledCharRef.current = null;
+  }, [text]);
+
+  useEffect(() => {
+    if (
+      finalScrollTo &&
+      finalScrollTo !== lastScrolledCharRef.current &&
+      scrollAnchorRef.current
+    ) {
+      setTimeout(() => {
+        scrollAnchorRef.current?.scrollIntoView({ behavior: "smooth" });
+        lastScrolledCharRef.current = finalScrollTo;
+      }, 0);
     }
-  }, [scrollAnchorRef, hasScrolledRef, scrollY]);
+  }, [text, finalScrollTo]);
 
   return (
     <>
       {scrollY ? (
         <div
           ref={scrollAnchorRef}
-          style={{ position: "absolute", top: scrollY, opacity: 0 }}
-        >
-          __
-        </div>
+          style={{
+            position: "absolute",
+            top: scrollY,
+            opacity: 0,
+            scrollMargin: 40,
+          }}
+        />
       ) : null}
       <svg
         className="rta-svg"

@@ -5,6 +5,7 @@ import {
   EnrichedAnnotationValue,
   EnrichedRelationValue,
   Label,
+  Options,
   RelationOperation,
   Relations,
   Token,
@@ -58,10 +59,13 @@ type AnnotatorProps = {
    */
   readOnly?: boolean;
   /**
+   * Set of options to customize the behavior of the component.
+   */
+  options?: Options;
+  /**
    * Set of options to customize how the component looks. See UIOptions type.
    */
   uiOptions?: Partial<UIOptions>;
-  initialScrollToChar?: number;
 };
 export const Annotator = (props: AnnotatorProps) => {
   const {
@@ -71,9 +75,9 @@ export const Annotator = (props: AnnotatorProps) => {
     onChangeAnnotations,
     onChangeRelations,
     renderContextualMenu,
+    options,
     uiOptions,
     readOnly,
-    initialScrollToChar,
   } = props;
 
   provideMissingColors(annotations, relations);
@@ -311,9 +315,9 @@ export const Annotator = (props: AnnotatorProps) => {
         renderContextualMenu={
           renderContextualMenu || defaultRenderContextualMenu
         }
+        options={options}
         uiOptions={uiOptions}
         readOnly={readOnly}
-        initialScrollToChar={initialScrollToChar}
       />
     </div>
   );

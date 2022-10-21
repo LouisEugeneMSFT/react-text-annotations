@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { Annotations, Relations, Token, UIOptions } from "../types";
+import { Annotations, Options, Relations, Token, UIOptions } from "../types";
 import { SvgView } from "./SvgView";
 
 export const textContainerId = "react-annotate-text-container";
@@ -21,9 +21,9 @@ type TextViewProps = {
   relations: Relations;
   onAnnotate: ([start, end]: number[]) => void;
   renderContextualMenu: (token: Token) => () => JSX.Element;
+  options?: Options;
   uiOptions?: Partial<UIOptions>;
   readOnly?: boolean;
-  initialScrollToChar?: number;
 };
 
 export const TextView = (props: TextViewProps) => {
@@ -33,9 +33,9 @@ export const TextView = (props: TextViewProps) => {
     relations,
     onAnnotate,
     renderContextualMenu,
+    options,
     uiOptions: propsUiOptions,
     readOnly,
-    initialScrollToChar,
   } = props;
 
   const uiOptions = useMemo(
@@ -63,7 +63,7 @@ export const TextView = (props: TextViewProps) => {
   }, []);
 
   // Loading the (monospace) font can take time and delay accurate offsetHeight / offsetWidth
-  document.fonts.ready.then(function () {
+  document.fonts.ready.then(function() {
     setTextContainerHeight(textContainerRef.current?.offsetHeight || 100);
     setTextContainerWidth(textContainerRef.current?.offsetWidth || 100);
   });
@@ -89,9 +89,9 @@ export const TextView = (props: TextViewProps) => {
           relations={relations}
           onAnnotate={onAnnotate}
           renderContextualMenu={renderContextualMenu}
+          options={options}
           uiOptions={uiOptions}
           readOnly={readOnly}
-          initialScrollToChar={initialScrollToChar}
           textContainerHeight={textContainerHeight}
           textContainerWidth={textContainerWidth}
           setLineHeight={setLineHeight}

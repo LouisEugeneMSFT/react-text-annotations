@@ -115,6 +115,17 @@ export type Token = EnrichedAnnotationValue | EnrichedRelationValue;
 
 export type Label = { key: string; type: "annotation" | "relation" } | null;
 
+export type Options = {
+  /**
+   * The view will automatically scroll to this character offset when specified. It has priority over scrollToFirstAnnotation.
+   */
+  scrollToChar?: number;
+  /**
+   * Boolean flag indicating whether the view should automatically scroll to the first annotation. When true, the scroll will happen whenever the text changes or the groups of annotations are changed, but not when a new annotation is created or deleted.
+   */
+  scrollToFirstAnnotation?: boolean;
+};
+
 export type UIOptions = {
   /**
    * Font size for the text.

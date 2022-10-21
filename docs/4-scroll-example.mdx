@@ -1,0 +1,39 @@
+---
+name: 4. Scroll example
+route: /scroll-example.mdx
+menu: Examples
+---
+
+# Scroll example
+
+You can ask the component to automatically scroll to a specific location:
+
+- scrollToFirstAnnotation is a boolean that will pick the first annotation when it exists.
+- scrollToChar maps to a specific character offset. It has priority over the previous parameter and can give more control.
+
+import { Playground, Props } from "docz";
+import { Annotator } from "../src/index.tsx";
+import { sampleLongText, sampleLongTextAnnotations } from "../docs/samples.ts";
+
+<Playground>
+  {() => {
+    const options = {
+      scrollToFirstAnnotation: true,
+      scrollToChar: null, // Try 2773 (the 2nd annotation)
+    };
+    const [annotations, setAnnotations] = React.useState(
+      sampleLongTextAnnotations
+    );
+    const [relations, setRelations] = React.useState([]);
+    return (
+      <Annotator
+        text={sampleLongText}
+        annotations={annotations}
+        relations={relations}
+        onChangeAnnotations={setAnnotations}
+        onChangeRelations={setRelations}
+        options={options}
+      />
+    );
+  }}
+</Playground>
