@@ -239,12 +239,6 @@ export const SvgView = (props: TextViewProps) => {
       return null;
     }
 
-    const allValues = annotations.map((a) => a.values).flat();
-    const allStarts = allValues.map((v) => v.start);
-    if (!allStarts.length) {
-      return -1;
-    }
-
     // annotationKeysHash is used to track updates only when groups are changed. Otherwise, any new annotation created before others would trigger a scroll.
     const annotationKeysHash = annotations
       .map((a) => a.key)
@@ -255,8 +249,14 @@ export const SvgView = (props: TextViewProps) => {
     }
     annotationKeysHashRef.current = annotationKeysHash;
 
+    const allValues = annotations.map((a) => a.values).flat();
+    const allStarts = allValues.map((v) => v.start);
+    if (!allStarts.length) {
+      return -1;
+    }
+
     return allStarts.sort((a, b) => a - b)[0];
-  }, [scrollToFirstAnnotation, annotations, text]);
+  }, [scrollToFirstAnnotation, annotations]);
 
   // scrollToChar has priority
   const finalScrollTo = scrollToChar || scrollToAnnotationChar;
