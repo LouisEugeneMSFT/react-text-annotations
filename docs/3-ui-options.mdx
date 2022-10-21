@@ -1,0 +1,44 @@
+---
+name: 3. UI Options
+route: /ui-options.mdx
+menu: Examples
+---
+
+# UI Options
+
+You can play with the ui option values below to see their effect:
+
+import { Playground, Props } from "docz";
+import { Annotator } from "../src/index.tsx";
+import {
+  sampleText,
+  sampleAnnotations,
+  sampleRelations,
+} from "../docs/samples.ts";
+
+<Playground>
+  {() => {
+    const uiOptions = {
+      fontSize: 20, // default 20
+      defaultSvgPadding: 10, // default 10
+      spaceBetweenTextAndSvg: 10, // default 6
+      svgWidth: 5, // default 3
+      spaceBetweenSvgs: 2, // default 2
+      spaceBeforeNextLine: 10, // default 10
+      relationVerticalOffset: 10, // default 7
+      relationHorizontalOffset: 5, // default 5
+    };
+    const [annotations, setAnnotations] = React.useState(sampleAnnotations);
+    const [relations, setRelations] = React.useState(sampleRelations);
+    return (
+      <Annotator
+        text={sampleText}
+        annotations={annotations}
+        relations={relations}
+        onChangeAnnotations={setAnnotations}
+        onChangeRelations={setRelations}
+        uiOptions={uiOptions}
+      />
+    );
+  }}
+</Playground>

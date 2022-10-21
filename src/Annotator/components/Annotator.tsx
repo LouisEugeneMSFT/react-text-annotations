@@ -1,9 +1,11 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import {
+  AnnotationOperation,
   Annotations,
   EnrichedAnnotationValue,
   EnrichedRelationValue,
   Label,
+  RelationOperation,
   Relations,
   Token,
   UIOptions,
@@ -15,36 +17,50 @@ import { Legend } from "./Legend";
 import { TextView } from "./TextView";
 
 type AnnotatorProps = {
+  /**
+   * The text being annotated.
+   */
   text: string;
+  /**
+   * The list of annotations, grouped by key.
+   * Annotations = AnnotationsByKey[].
+   * See the AnnotationsByKey type.
+   */
   annotations: Annotations;
+  /**
+   * The list of relations, grouped by key.
+   * Relations = RelationsByKey[].
+   * See the RelationsByKey type.
+   */
   relations: Relations;
+  /**
+   * Callback for when an annotation has been added or deleted.
+   * See the AnnotationOperation type.
+   */
   onChangeAnnotations?: (
     newAnnotations: Annotations,
-    operation: {
-      type: "add" | "delete";
-      labelKey: string;
-      range: {
-        start: number;
-        end: number;
-      };
-    }
+    operation: AnnotationOperation
   ) => void;
+  /**
+   * Callback for when a relation has been added or deleted.
+   * See the RelationOperation type.
+   */
   onChangeRelations?: (
     newRelations: Relations,
-    operation: {
-      type: "add" | "delete";
-      labelKey: string;
-      range: {
-        fromStart: number;
-        fromEnd: number;
-        toStart: number;
-        toEnd: number;
-      };
-    }
+    operation: RelationOperation
   ) => void;
+  /**
+   * Custom component for when a user right clicks on an annotation or relation.
+   */
   renderContextualMenu?: (token: Token) => () => JSX.Element;
-  uiOptions?: Partial<UIOptions>;
+  /**
+   * Boolean indicating whether annotations & relations can be added / deleted.
+   */
   readOnly?: boolean;
+  /**
+   * Set of options to customize how the component looks. See UIOptions type.
+   */
+  uiOptions?: Partial<UIOptions>;
   initialScrollToChar?: number;
 };
 export const Annotator = (props: AnnotatorProps) => {
