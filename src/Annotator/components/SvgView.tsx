@@ -71,7 +71,7 @@ export const SvgView = (props: TextViewProps) => {
   };
 
   const scrollAnchorRef = useRef<HTMLDivElement>(null);
-  const lastScrolledCharRef = useRef(null);
+  const annotationKeysHashRef = useRef(null);
 
   const [contextualMenuAnchor, setContextualMenuAnchor] = useState<{
     x: number;
@@ -198,6 +198,11 @@ export const SvgView = (props: TextViewProps) => {
     onAnnotate([from, to]);
   }, [onAnnotate]);
 
+  // Reset annotationKeysHashRef when text changes
+  useEffect(() => {
+    annotationKeysHashRef.current = null;
+  }, [text]);
+
   useEffect(() => {
     document.addEventListener("click", handleClick);
     document.addEventListener("contextmenu", handleContextMenu);
@@ -228,21 +233,30 @@ export const SvgView = (props: TextViewProps) => {
   const scrollToChar = options?.scrollToChar;
   const scrollToFirstAnnotation = options?.scrollToFirstAnnotation;
 
-  const annotationKeysHash = annotations
-    .map((a) => a.key)
-    .sort()
-    .join("-");
   // When scrollToFirstAnnotation flag is set to true, gets the start of the first annotation across all groups.
-  // annotationKeysHash is used in dependencies instead of just annotations to update only when groups are changed. Otherwise, any new annotation created before others would trigger a scroll.
   const scrollToAnnotationChar = useMemo(() => {
-    if (!scrollToFirstAnnotation || !annotations.length) {
+    if (!scrollToFirstAnnotation) {
       return null;
     }
+
     const allValues = annotations.map((a) => a.values).flat();
     const allStarts = allValues.map((v) => v.start);
+    if (!allStarts.length) {
+      return -1;
+    }
 
-    return allStarts.sort()[0];
-  }, [scrollToFirstAnnotation, annotationKeysHash]);
+    // annotationKeysHash is used to track updates only when groups are changed. Otherwise, any new annotation created before others would trigger a scroll.
+    const annotationKeysHash = annotations
+      .map((a) => a.key)
+      .sort()
+      .join("-");
+    if (annotationKeysHash === annotationKeysHashRef.current) {
+      return null;
+    }
+    annotationKeysHashRef.current = annotationKeysHash;
+
+    return allStarts.sort((a, b) => a - b)[0];
+  }, [scrollToFirstAnnotation, annotations, text]);
 
   // scrollToChar has priority
   const finalScrollTo = scrollToChar || scrollToAnnotationChar;
@@ -260,37 +274,26 @@ export const SvgView = (props: TextViewProps) => {
     setLineHeight(enrichedComputedUiOptions.lineHeight);
   }, [enrichedComputedUiOptions.lineHeight]);
 
-  // Reset lastScrolledCharRef when text changes
   useEffect(() => {
-    lastScrolledCharRef.current = null;
-  }, [text]);
-
-  useEffect(() => {
-    if (
-      finalScrollTo &&
-      finalScrollTo !== lastScrolledCharRef.current &&
-      scrollAnchorRef.current
-    ) {
+    if (finalScrollTo !== null && scrollAnchorRef.current) {
       setTimeout(() => {
         scrollAnchorRef.current?.scrollIntoView({ behavior: "smooth" });
-        lastScrolledCharRef.current = finalScrollTo;
       }, 0);
     }
   }, [text, finalScrollTo]);
 
   return (
     <>
-      {scrollY ? (
-        <div
-          ref={scrollAnchorRef}
-          style={{
-            position: "absolute",
-            top: scrollY,
-            opacity: 0,
-            scrollMargin: 40,
-          }}
-        />
-      ) : null}
+      <div
+        ref={scrollAnchorRef}
+        style={{
+          position: "absolute",
+          top: scrollY || 0,
+          opacity: 0,
+          scrollMargin: 50,
+        }}
+      />
+
       <svg
         className="rta-svg"
         style={{
